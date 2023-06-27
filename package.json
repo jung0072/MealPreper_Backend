@@ -13,7 +13,8 @@
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-session": "^1.17.3",
-    "helmet": "^6.0.1",
+    "helmet": "^6.1.5",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
@@ -26,7 +27,7 @@
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon -r dotenv/config src/index.js",
     "start": "node src/index.js"
   }
 }

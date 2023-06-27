@@ -1,7 +1,9 @@
 "use strict";
 
-require("./utils/server.js");
+require("./utils/connectDB.js");
 require("dotenv").config();
+console.log("process.env.DEBUG:", process.env.DEBUG);
+
 const express = require("express");
 const sanitizeMongo = require("express-mongo-sanitize");
 const morgan = require("morgan");
@@ -11,11 +13,11 @@ const helmet = require("helmet");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const session = require("express-session");
-const isAuthenticated = require("./middleware/isAuthenticated.js");
 
+const apiRouter = require("./routers/apiRouter.js");
+const authRouter = require("./routers/authRouter.js");
+const isAuthenticated = require("./middlewares/authentication.js");
 const { errorHandler } = require("./utils/errorHandler.js");
-const pokemonRouter = require("./router/pokemonRouter.js");
-const authenticator = require("./router/auth.js");
 
 const app = express();
 
@@ -51,8 +53,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/pokemon", isAuthenticated, pokemonRouter);
-app.use("/auth", authenticator);
+app.use("/auth", authRouter);
+app.use("/api", isAuthenticated, apiRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
