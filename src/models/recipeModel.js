@@ -1,5 +1,20 @@
 const { Schema, Types, model } = require("mongoose");
 
+const IngredientSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  unit: {
+    type: String,
+    required: true,
+  },
+});
+
 const RecipeSchema = new Schema(
   {
     title: {
@@ -15,7 +30,7 @@ const RecipeSchema = new Schema(
       required: true,
     },
     ingredient: {
-      type: Map,
+      type: [IngredientSchema],
       required: true,
     },
     steps: {

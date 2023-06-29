@@ -1,6 +1,7 @@
 const debug = require("debug")("app:recipeController");
 
 const RecipeService = require("../services/recipeService");
+const OpenAIService = require("../services/openAI");
 
 // const Recipe = require("../models/recipeModel");
 
@@ -12,7 +13,7 @@ const getAllRecipe = async (req, res, next) => {
       {
         title: "dummy title",
         description: "dummy description",
-        ingredients: "dummy ingredients",
+        ingredients: {"name": "dummy", "amount": 2, "unit": "g"},
         instructions: ["dummy instructions", "dummy instructions"],
         image:
           "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -22,7 +23,7 @@ const getAllRecipe = async (req, res, next) => {
       {
         title: "dummy title2",
         description: "dummy description2",
-        ingredients: "dummy ingredients2",
+        ingredients: {"name": "dummy2", "amount": 3, "unit": "lb"},
         instructions: ["dummy instructions2", "dummy instructions2"],
         image:
           "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -47,7 +48,20 @@ const createRecipe = async (req, res, next) => {
   }
 };
 
+const generateRecipe = async (req, res, next) => {
+  debug("generateRecipe");
+  try {
+    const recipe = await OpenAIService.generateRecipe(req.body);
+    console.log("RECIPE:", recipe);
+    
+    res.json({ data: recipe });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllRecipe,
   createRecipe,
+  generateRecipe,
 };
