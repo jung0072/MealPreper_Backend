@@ -9,9 +9,13 @@ const getAllRecipe = async () => {
   return recipe;
 };
 
-const createRecipe = async (recipe) => {
+const createRecipe = async (ownerId, recipe) => {
   debug("createRecipe");
-  const newRecipe = new Recipe(recipe);
+  const newRecipe = new Recipe({
+    ...recipe,
+    ownerID: ownerId,
+    createdAt: new Date(),
+  });
   await newRecipe.save();
   return newRecipe;
 };

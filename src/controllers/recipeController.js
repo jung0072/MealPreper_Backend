@@ -41,7 +41,9 @@ const createRecipe = async (req, res, next) => {
   debug("createRecipe");
   debug(req.body);
   try {
-    const recipe = await RecipeService.createRecipe(req.body);
+    debug(req.user);
+    const ownerId = req.user._id;
+    const recipe = await RecipeService.createRecipe(ownerId, req.body);
     res.json({ data: recipe });
   } catch (error) {
     next(error);

@@ -34,11 +34,11 @@ const generateRecipe = async (req) => {
     const completion = await openai.createChatCompletion(prompt);
 
     console.log(
-      "Total Usage Token:",
       completion.data.usage.total_tokens,
-      "/",
-      0.0015 * completion.data.usage.prompt_tokens + 0.002 * completion.data.usage.completion_tokens,
-      "Dollars"
+      "Token Used / $",
+      0.0015 * completion.data.usage.prompt_tokens +
+        0.002 * completion.data.usage.completion_tokens,
+      "cents"
     );
     return completion.data.choices[0].message;
   } catch (error) {
