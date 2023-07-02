@@ -51,9 +51,7 @@ const createRecipe = async (req, res, next) => {
 const generateRecipe = async (req, res, next) => {
   debug("generateRecipe");
   try {
-    const recipe = await OpenAIService.generateRecipe(req.body);
-    console.log("RECIPE:", recipe);
-    
+    const recipe = await OpenAIService.generateRecipe(req.body);    
     res.json({ data: recipe });
   } catch (error) {
     next(error);
