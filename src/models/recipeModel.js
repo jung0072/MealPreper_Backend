@@ -1,7 +1,7 @@
 const { Schema, Types, model } = require("mongoose");
 
 const IngredientSchema = new Schema({
-  name: {
+  ingredient: {
     type: String,
     required: true,
   },
@@ -17,29 +17,48 @@ const IngredientSchema = new Schema({
 
 const RecipeSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
     createdAt: {
       type: Date,
       required: true,
+    },
+    updatedAt: {
+      type: Date,
+      required: false,
     },
     ownerID: {
       type: Types.ObjectId,
       required: true,
     },
-    ingredient: {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      default: "",
+      required: false,
+    },
+    ingredients: {
       type: [IngredientSchema],
       required: true,
     },
-    steps: {
+    instructions: {
       type: Array,
+      required: true,
+    },
+    servings: {
+      type: Number,
       required: true,
     },
     rate: {
       type: Number,
       required: false,
+    },
+    type: {
+      type:  String,
+      enum: ["MEAL_PREP_LUNCH", "MEAL_PREP_Dinner", "MEAL", "DESSERT", "SNACK", "DRINK", "OTHER"],
+      default: "OTHER",
+      required: true,
     },
   },
   {

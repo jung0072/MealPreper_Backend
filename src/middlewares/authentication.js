@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const isAuthenticated = async (req, res, next) => {
   const rawToken = req.headers.authorization;
   const token = rawToken?.replace("Bearer", "").trim();
-  debug("token:", token);
+  debug("token:", token? "provided" : "not provided");
   try {
     const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
