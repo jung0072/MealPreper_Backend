@@ -11,7 +11,7 @@ const generateRecipe = async (req, res, next) => {
   debug("generateRecipe");
   const copiedRecipe = req.body.copiedRecipe || "";
   console.log("copiedRecipe", copiedRecipe);
-  
+
   const prompt = {
     model: "gpt-3.5-turbo",
     messages: generatePrompt(copiedRecipe),
@@ -67,16 +67,17 @@ function generatePrompt(recipe) {
       calories: 600kcal
       Ingredients 
       1/2 cup dry farro 
-      2–3 tsp avocado oil or Olive oil
       Four and a half Persian cucumbers, halved lengthwise 
       2 ears of corn, kernels cut away from the cob 
       instructions 
       Cook farro according to package instructions then set aside. 
-      Place your halved cucumbers cut side down on a flat cutting board then with the flat side of your knife, smack down along the length of the cucumber until it splits. Slice the cucumbers diagonally into 1/2 inch pieces.`,
+      Place your halved cucumbers cut side down on a flat cutting board
+      With the flat side of your knife, smack down along the length of the cucumber until it splits. 
+      Cook corn in a skillet over medium heat until charred, about 5 minutes.`,
     },
     {
       role: "system",
-      content: `{"title":"skillet charred corn and edamame salad","description":"A plant-based protein packed meal filled with bright citrus flavor for a refreshing bite.","servings":4,"calories":600,"ingredients":[{"ingredient":"dry farro","amount":0.5,"unit":"cup"},{"ingredient":"avocado oil","amount":2,"unit":"tsp","alternative":"olive oil"},{"ingredient":"persian cucumbers","amount":4.5,"unit":"pc","process":"halved lengthwise"},{"ingredient":"corn","amount":2,"unit":"ear","details":"kernels cut away from the cob"}],"instructions":["cook farro according to package instructions then set aside.","place your halved cucumbers cut side down on a flat cutting board then with the flat side of your knife, smack down along the length of the cucumber until it splits. Slice the cucumbers diagonally into 1/2 inch pieces."]}`,
+      content: JSON.stringify(outPutExample),
     },
     {
       role: "user",
@@ -88,4 +89,57 @@ function generatePrompt(recipe) {
 
 module.exports = {
   generateRecipe,
+};
+
+const outPutExample = {
+  title: "skillet charred corn and edamame salad",
+  description:
+    "A plant-based protein packed meal filled with bright citrus flavor for a refreshing bite.",
+  servings: 4,
+  calories: 600,
+  ingredients: [
+    {
+      ingredientName: "farro",
+      amount: 0.5,
+      unit: "cup",
+      process: "dry",
+      block: [0],
+    },
+    {
+      ingredientName: "persian cucumbers",
+      amount: 4.5,
+      unit: "pc",
+      process: "halved lengthwise",
+      block: [1, 2],
+    },
+    {
+      ingredientName: "corn",
+      amount: 2,
+      unit: "ear",
+      details: "kernels cut away from the cob",
+      block: [3],
+    },
+  ],
+  instructions: [
+    {
+      instructionContent:
+        "cook farro according to package instructions then set aside.",
+      block: 0,
+    },
+    {
+      instructionContent:
+        "place your halved cucumbers cut side down on a flat cutting board",
+      block: 1,
+    },
+    {
+      instructionContent:
+        "With the flat side of your knife, smack down along the length of the cucumber until it splits. ",
+      block: 2,
+    },
+    {
+      instructionContent:
+        "Cook corn in a skillet over medium heat until charred, about 5 minutes.",
+      block: 3,
+    },
+  ],
 };
